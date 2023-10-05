@@ -1,11 +1,15 @@
 package pl.maja.model;
 
 import jakarta.persistence.*;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
+@Lazy
 public class Subject {
 
     @Id
@@ -16,7 +20,7 @@ public class Subject {
     @ManyToMany
     @JoinTable(name="professors_subjects", joinColumns = @JoinColumn(name="id_subject", referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name="id_professore", referencedColumnName = "id"))
-    private List<Professor> professors;
+    private Set<Professor> professors;
 
     @ManyToOne
     @JoinColumn(name="student_id")
@@ -27,13 +31,13 @@ public class Subject {
 
 
     public Subject() {
-        professors = new ArrayList<>();
+        professors = new HashSet<>();
         marks = new ArrayList<>();
     }
 
     public Subject(String name) {
         this.name = name;
-        professors = new ArrayList<>();
+        professors = new HashSet<>();
         marks = new ArrayList<>();
     }
 
@@ -50,11 +54,11 @@ public class Subject {
         this.name = name;
     }
 
-    public List<Professor> getProfessors() {
+    public Set<Professor> getProfessors() {
         return professors;
     }
 
-    public void setProfessors(List<Professor> professors) {
+    public void setProfessors(Set<Professor> professors) {
         this.professors = professors;
     }
 

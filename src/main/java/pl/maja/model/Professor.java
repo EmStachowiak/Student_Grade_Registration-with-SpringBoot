@@ -23,6 +23,12 @@ public class Professor {
         subjects = new HashSet<>();
     }
 
+    public Professor(String name, String surname, Set<Subject> subjects) {
+        this.name = name;
+        this.surname = surname;
+        this.subjects = subjects;
+    }
+
     public Professor() {
         subjects = new HashSet<>();
     }
@@ -53,6 +59,10 @@ public class Professor {
 
     public void setSubjects(Set<Subject> subjects) {
         this.subjects = subjects;
+    }
+
+    public void addSubject(Subject subject) {
+        subjects.add(subject);
     }
 
     @Override

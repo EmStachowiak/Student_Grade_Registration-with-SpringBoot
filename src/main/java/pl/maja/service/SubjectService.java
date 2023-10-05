@@ -7,6 +7,7 @@ import pl.maja.repository.SubjectRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class SubjectService {
@@ -32,4 +33,22 @@ public class SubjectService {
     public void deleteSubject(int id) {
         subjectRepository.deleteById(id);
     }
+
+    public void addProfToSubject(int id, Set<Professor> professors) {
+        Subject subject = subjectRepository.findById(id).get();
+        subject.setProfessors(professors);
+        subjectRepository.save(subject);
+
+    }
+
+    public List<Subject> saveSubjects(List<Subject> subjects) {
+        return subjectRepository.saveAll(subjects);
+    }
+
+//    public void addProfessorsToSubject(int subjectId, List<Professor> professors) {
+//        Subject subject = subjectRepository.findById(subjectId).orElseThrow();
+//        subject.getProfessors().addAll(professors);
+//        subjectRepository.save(subject);
+//    }
+
 }
