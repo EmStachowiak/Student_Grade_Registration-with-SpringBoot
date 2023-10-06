@@ -1,5 +1,6 @@
 package pl.maja.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,6 +12,7 @@ public class Mark {
     private int value;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name="subject_id")
     private Subject subject;
 

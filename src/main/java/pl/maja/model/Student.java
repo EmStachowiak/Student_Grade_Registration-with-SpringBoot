@@ -1,5 +1,6 @@
 package pl.maja.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -65,6 +66,14 @@ public class Student {
     public void setSubjects(Set<Subject> subjects) {
         this.subjects = subjects;
     }
+
+
+    public void addSubject(Subject subject) {
+        this.subjects.add(subject);
+        subject.setStudent(this);
+
+    }
+
 
     @Override
     public String toString() {

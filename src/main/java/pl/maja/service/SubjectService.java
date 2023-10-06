@@ -1,7 +1,6 @@
 package pl.maja.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import pl.maja.model.Professor;
 import pl.maja.model.Subject;
@@ -76,21 +75,7 @@ public class SubjectService {
             Subject sub = subject.get();
             profList = sub.getProfessors();
 
-
         }
         return profList;
     }
-
-    @Transactional
-    public void deleteProfessor(int subjectId) {
-        Subject subject = subjectRepository.findById(subjectId).orElse(null);
-        if (subject != null) {
-            Set<Professor> professors = subject.getProfessors();
-            for (Professor professor: professors) {
-                professor.getSubjects().remove(subject);
-            }
-            subjectRepository.delete(subject);
-        }
-    }
-
 }

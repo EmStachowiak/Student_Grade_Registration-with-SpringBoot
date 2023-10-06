@@ -72,6 +72,4 @@ public class SubjectController {
     public void deleteSubject(@PathVariable int id) {
         subjectService.deleteSubject(id);
     }
-
-
     }

@@ -1,5 +1,6 @@
 package pl.maja.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class Subject {
     private Set<Professor> professors;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name="student_id")
     private Student student;
 
