@@ -1,6 +1,7 @@
 package pl.maja.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import pl.maja.model.Professor;
 import pl.maja.model.Subject;
@@ -39,23 +40,6 @@ public class SubjectService {
         subjectRepository.deleteById(id);
     }
 
-//    public void addProfToSubject(int id, Set<Professor> professors) {
-//        Subject subject = subjectRepository.findById(id).get();
-//        subject.setProfessors(professors);
-//        subjectRepository.save(subject);
-//    }
-
-    //    public void addProfessorsToSubject(int subjectId, List<Professor> professors) {
-//        Subject subject = subjectRepository.findById(subjectId).orElseThrow();
-//        subject.getProfessors().addAll(professors);
-//        subjectRepository.save(subject);
-//    }
-
-    public List<Subject> saveSubjects(List<Subject> subjects) {
-        return subjectRepository.saveAll(subjects);
-    }
-
-
 
     public void addProfToSubject(int subjectId, int professorId) {
         Subject subject = subjectRepository.findById(subjectId)
@@ -69,8 +53,44 @@ public class SubjectService {
 
     }
 
+    public void updateSubjectByID(int id, Subject updatedSubject) {
+        Optional<Subject> existingSubject = subjectRepository.findById(id);
+
+        if(existingSubject.isPresent()) {
+            Subject subject = existingSubject.get();
+
+            if (updatedSubject.getName() != null) {
+                subject.setName(updatedSubject.getName());
+            }
+            subjectRepository.save(subject);
+        } else {
+            System.out.println("There is no subject with this name.");
+        }
+    }
+
+    public Set<Professor> showAllProfOfParticularSub(int subjectId) {
+        Optional<Subject> subject = subjectRepository.findById(subjectId);
+        Set<Professor> profList = null;
+
+        if (subject != null) {
+            Subject sub = subject.get();
+            profList = sub.getProfessors();
 
 
+        }
+        return profList;
+    }
 
+    @Transactional
+    public void deleteProfessor(int subjectId) {
+        Subject subject = subjectRepository.findById(subjectId).orElse(null);
+        if (subject != null) {
+            Set<Professor> professors = subject.getProfessors();
+            for (Professor professor: professors) {
+                professor.getSubjects().remove(subject);
+            }
+            subjectRepository.delete(subject);
+        }
+    }
 
 }
