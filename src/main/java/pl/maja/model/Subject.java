@@ -1,7 +1,6 @@
 package pl.maja.model;
 
 import jakarta.persistence.*;
-import org.springframework.context.annotation.Lazy;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Lazy
 public class Subject {
 
     @Id
@@ -17,7 +15,13 @@ public class Subject {
     private int id;
     private String name;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE,
+                    CascadeType.DETACH
+
+            })
     @JoinTable(name="professors_subjects", joinColumns = @JoinColumn(name="id_subject", referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name="id_professore", referencedColumnName = "id"))
     private Set<Professor> professors;
@@ -54,6 +58,7 @@ public class Subject {
         this.name = name;
     }
 
+
     public Set<Professor> getProfessors() {
         return professors;
     }
@@ -61,6 +66,37 @@ public class Subject {
     public void setProfessors(Set<Professor> professors) {
         this.professors = professors;
     }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    public List<Mark> getMarks() {
+        return marks;
+    }
+
+    public void setMarks(List<Mark> marks) {
+        this.marks = marks;
+    }
+
+    public void addProfessor(Professor professor) {
+        this.professors.add(professor);
+        professor.addSubject(this);
+        professor.getSubjects().add(this);
+    }
+
+    public void removeProfessor(int professorId) {
+        Professor professor = this.professors.stream().filter( p -> p.getId() == professorId).findFirst().orElse(null);
+        if (professor != null) {
+            this.professors.remove(professor);
+            professor.getSubjects().remove(this);
+        }
+    }
+
 
     @Override
     public String toString() {

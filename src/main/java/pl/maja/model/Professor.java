@@ -1,5 +1,6 @@
 package pl.maja.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -14,7 +15,14 @@ public class Professor {
     private String name;
     private String surname;
 
-    @ManyToMany(mappedBy = "professors")
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE,
+                    CascadeType.DETACH
+
+            }, mappedBy = "professors")
+    @JsonIgnore
     private Set<Subject> subjects;
 
     public Professor(String name, String surname) {

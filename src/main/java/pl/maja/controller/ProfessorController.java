@@ -1,10 +1,13 @@
 package pl.maja.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.maja.model.Professor;
 import pl.maja.model.Subject;
+import pl.maja.repository.ProfessorRepository;
+import pl.maja.repository.SubjectRepository;
 import pl.maja.service.ProfessorService;
 
 import java.util.List;
@@ -17,6 +20,7 @@ public class ProfessorController {
 
     @Autowired
     private ProfessorService professorService;
+
 
     @PostMapping
     public Professor createProf(@RequestBody Professor prof) {
@@ -54,20 +58,5 @@ public class ProfessorController {
         }
     }
 
-//    @PostMapping("/add_subject")
-//    public ResponseEntity<Void> addSubjectsToProf( @RequestParam int idProfessor, @RequestParam int idSubject) {
-//        try {
-//            professorService.addSubject(idProfessor, idSubject);
-//            return ResponseEntity.noContent().build();
-//        } catch (Exception e) {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
 
-
-    @PostMapping("/{id}/add_subject")   // NIE DZIAŁA
-    public ResponseEntity<Professor> addSubjectToProfessor(@PathVariable int id, @RequestBody Subject subject) {
-        Professor updatedProfessor = professorService.addSubjectToProfessor(id, subject);
-        return ResponseEntity.ok(updatedProfessor);
-    }
 }

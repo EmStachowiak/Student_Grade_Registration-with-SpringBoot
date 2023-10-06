@@ -1,5 +1,7 @@
 package pl.maja.service;
 
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import pl.maja.model.Professor;
 import pl.maja.model.Subject;
@@ -16,9 +18,8 @@ public class ProfessorService {
     private ProfessorRepository professorRepository;
     private SubjectRepository subjectRepository;
 
-    public ProfessorService(ProfessorRepository professorRepository, SubjectRepository subjectRepository) {
+    public ProfessorService(ProfessorRepository professorRepository) {
         this.professorRepository = professorRepository;
-        this.subjectRepository = subjectRepository;
     }
 
     public List<Professor> getAllProf() {
@@ -33,9 +34,7 @@ public class ProfessorService {
         return  professorRepository.save(professor);
     }
 
-    public void deleteProfessor(int id) {
-        professorRepository.deleteById(id);
-    }
+
 
     public void updateProfByID(int id, Professor updatedProf) {
         Optional<Professor> existingProf = professorRepository.findById(id);
@@ -49,15 +48,23 @@ public class ProfessorService {
             if (updatedProf.getSurname() != null) {
                 professor.setSurname(updatedProf.getSurname());
             }
-//            if (updatedProf.getSubjects() != null || updatedProf.getSubjects() == null){
-//                professor.setSubjects(updatedProf.getSubjects());
-//            }
             professorRepository.save(professor);
         } else {
             System.out.println("There is no proff with this name.");
         }
     }
 
+    @Transactional
+    public void deleteProfessor(int professorId) {
+        Professor professor = professorRepository.findById(professorId).orElse(null);
+        if (professor != null) {
+            professorRepository.delete(professor);
+        }
+    }
+
+//    public void deleteProfessor(int id) {
+//        professorRepository.deleteById(id);
+//    }
 
 
 
@@ -72,20 +79,20 @@ public class ProfessorService {
 //      //  subjectRepository.saveAll(subjects);
 //    }
 
-    public Professor addSubject(int idProfessor, int idSubject){
+//    public Professor addSubject(int professorId, int subjectId){
+//
+//        Professor updatedProf = professorRepository.findById(professorId).get();
+//        Subject subject =subjectRepository.findById(subjectId).get();
+//
+//        updatedProf.addSubject(subject);
+//        professorRepository.save(updatedProf);
+//        subjectRepository.save(subject);
+//
+//        return updatedProf;
+//    }
 
-        Professor updatedProf = professorRepository.findById(idProfessor).get();
-        Subject subject =subjectRepository.findById(idSubject).get();
 
-        updatedProf.addSubject(subject);
-        professorRepository.save(updatedProf);
-        subjectRepository.save(subject);
-
-        return updatedProf;
-    }
-
-
-// NIE DZIAŁA
+ //NIE DZIAŁA
 //    public Professor addSubjectToProfessor(int professorId, Subject subject) {
 //        Optional<Professor> profToUpdate = professorRepository.findById(professorId);
 //
@@ -96,5 +103,18 @@ public class ProfessorService {
 //        } else {
 //            throw new IllegalArgumentException("Professor with ID " + professorId + " not found.");
 //        }
+//    }
+
+        // ponoć się nie da odwrotnie dodawać?
+//    public void addSubjectToProf( int professorId, int subjectId) {
+//        Professor professor = professorRepository.findById(professorId)
+//                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono profesora o podanym ID"));
+//
+//        Subject subject = subjectRepository.findById(subjectId)
+//                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono przedmiotu o podanym ID"));
+//
+//
+//        professor.addSubject(subject);
+//        professorRepository.save(professor);
 //    }
 }
