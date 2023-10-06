@@ -1,6 +1,8 @@
 # Student_Grade_Registration-with-SpringBoot
-MVC
+----------------Unfinished--------------------
 Model: Professor, Subject, Mark, Student.
 Relations: OneToMany, ManyToOne, ManyToMany
-----------------Unfinished--------------------
-
+--------------------------------------------
+ProfessorController(POST createProf, GET one, GET all, DELETE one, PATCH updatePartOrAll)
+------------------
+SubjectController(POST createSub, GET one, GET all, PATCH updatePartOrAll, DELETE, PUT addProfessorToSubject, GET showAllProfOfParticularSubject)
