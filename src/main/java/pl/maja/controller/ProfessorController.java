@@ -38,11 +38,6 @@ public class ProfessorController {
     }
 
 
-//    @PatchMapping("/{id}")
-//    public void updateProffesor(@PathVariable int id, @RequestBody Professor professor) {
-//        professorService.updateProfByID(id, professor);
-//    }
-
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updateOnlyPart(@PathVariable int id, @RequestBody Professor professor) {
         try {
@@ -52,6 +47,4 @@ public class ProfessorController {
             return ResponseEntity.notFound().build();
         }
     }
-
-
 }

@@ -32,10 +32,6 @@ public class Mark {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public int getValue() {
         return value;
     }
@@ -60,4 +56,6 @@ public class Mark {
                 ", subject=" + subject +
                 '}';
     }
+
+
 }

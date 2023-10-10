@@ -42,10 +42,10 @@ public class SubjectService {
 
     public void addProfToSubject(int subjectId, int professorId) {
         Subject subject = subjectRepository.findById(subjectId)
-                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono przedmiotu o podanym ID"));
+                .orElseThrow(() -> new EntityNotFoundException("No professor with the given ID was found"));
 
         Professor professor = professorRepository.findById(professorId)
-                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono profesora o podanym ID"));
+                .orElseThrow(() -> new EntityNotFoundException("No subject with the given ID was found"));
 
         subject.addProfessor(professor);
         subjectRepository.save(subject);

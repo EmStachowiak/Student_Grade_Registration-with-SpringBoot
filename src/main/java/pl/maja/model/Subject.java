@@ -21,16 +21,15 @@ public class Subject {
                     CascadeType.PERSIST,
                     CascadeType.MERGE,
                     CascadeType.DETACH
-
             })
     @JoinTable(name="professors_subjects", joinColumns = @JoinColumn(name="id_subject", referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name="id_professore", referencedColumnName = "id"))
     private Set<Professor> professors;
 
-    @ManyToOne
+
+    @ManyToMany(mappedBy = "subjects")
     @JsonIgnore
-    @JoinColumn(name="student_id")
-    private Student student;
+    private Set<Student> students;
 
     @OneToMany(mappedBy = "subject")
     private List<Mark> marks;
@@ -69,13 +68,6 @@ public class Subject {
         this.professors = professors;
     }
 
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
 
     public List<Mark> getMarks() {
         return marks;
@@ -84,6 +76,15 @@ public class Subject {
     public void setMarks(List<Mark> marks) {
         this.marks = marks;
     }
+
+    public Set<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<Student> students) {
+        this.students = students;
+    }
+
 
     public void addProfessor(Professor professor) {
         this.professors.add(professor);
@@ -99,13 +100,15 @@ public class Subject {
         }
     }
 
-
     @Override
     public String toString() {
         return "Subject{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", professors=" + professors +
+                ", students=" + students +
+                ", marks=" + marks +
                 '}';
     }
 }
+

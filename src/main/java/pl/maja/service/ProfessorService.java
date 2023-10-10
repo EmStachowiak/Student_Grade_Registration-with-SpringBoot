@@ -3,7 +3,6 @@ package pl.maja.service;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import pl.maja.model.Professor;
-import pl.maja.model.Student;
 import pl.maja.model.Subject;
 import pl.maja.repository.ProfessorRepository;
 import pl.maja.repository.SubjectRepository;
@@ -16,7 +15,6 @@ import java.util.Set;
 public class ProfessorService {
 
     private ProfessorRepository professorRepository;
-    private SubjectRepository subjectRepository;
 
     public ProfessorService(ProfessorRepository professorRepository) {
         this.professorRepository = professorRepository;
@@ -66,55 +64,4 @@ public class ProfessorService {
         }
     }
 
-
-
-
-
-
-//    public void addSubjectsToProf(int id, Set<Subject> subjects) {
-//        Professor professor = professorRepository.findById(id).get();
-//        professor.setSubjects(subjects);
-//
-//        professorRepository.save(professor);
-//      //  subjectRepository.saveAll(subjects);
-//    }
-
-//    public Professor addSubject(int professorId, int subjectId){
-//
-//        Professor updatedProf = professorRepository.findById(professorId).get();
-//        Subject subject =subjectRepository.findById(subjectId).get();
-//
-//        updatedProf.addSubject(subject);
-//        professorRepository.save(updatedProf);
-//        subjectRepository.save(subject);
-//
-//        return updatedProf;
-//    }
-
-
- //NIE DZIAŁA
-//    public Professor addSubjectToProfessor(int professorId, Subject subject) {
-//        Optional<Professor> profToUpdate = professorRepository.findById(professorId);
-//
-//        if (profToUpdate.isPresent()) {
-//            Professor professor = profToUpdate.get();
-//            professor.addSubject(subject);
-//            return professorRepository.save(professor);
-//        } else {
-//            throw new IllegalArgumentException("Professor with ID " + professorId + " not found.");
-//        }
-//    }
-
-        // ponoć się nie da odwrotnie dodawać?
-//    public void addSubjectToProf( int professorId, int subjectId) {
-//        Professor professor = professorRepository.findById(professorId)
-//                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono profesora o podanym ID"));
-//
-//        Subject subject = subjectRepository.findById(subjectId)
-//                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono przedmiotu o podanym ID"));
-//
-//
-//        professor.addSubject(subject);
-//        professorRepository.save(professor);
-//    }
 }

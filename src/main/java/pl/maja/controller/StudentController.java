@@ -107,6 +107,16 @@ public class StudentController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
 
+    @GetMapping("/same_class/{schoolClass}")
+    public ResponseEntity<Set<Student>> getAllStudentsByClass(@PathVariable String schoolClass) {
+        Set<Student> studentSet = studentService.getStudentsFromSameClass(schoolClass);
+
+        if (studentSet != null) {
+            return ResponseEntity.ok(studentSet);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

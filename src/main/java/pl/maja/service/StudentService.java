@@ -1,18 +1,16 @@
 package pl.maja.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import pl.maja.model.Mark;
-import pl.maja.model.Professor;
 import pl.maja.model.Student;
 import pl.maja.model.Subject;
 import pl.maja.repository.MarkRepository;
 import pl.maja.repository.StudentRepository;
 import pl.maja.repository.SubjectRepository;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class StudentService {
@@ -66,9 +64,9 @@ public class StudentService {
 
     public void addSubjectToStudent(int studentId, int subjectId) {
         Student student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono studenta o podanym ID"));
+                .orElseThrow(() -> new EntityNotFoundException("There is no student with this name."));
         Subject subject = subjectRepository.findById(subjectId)
-                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono przedmiotu o podanym ID"));
+                .orElseThrow(() -> new EntityNotFoundException("There is no subject with this name."));
 
         student.addSubject(subject);
         studentRepository.save(student);
@@ -92,4 +90,20 @@ public class StudentService {
         markRepository.save(mark);
 
     }
+
+    @Transactional
+    public Set<Student> getStudentsFromSameClass(String schoolClass) {
+
+        List<Student> allStudents =  studentRepository.findAll();
+        Set<Student> allStudentsSet = new HashSet<>(allStudents);
+        Set<Student> sameClass = new HashSet<>();
+
+        for(Student s : allStudentsSet) {
+            if (s.getSchoolClass().equals(schoolClass)) {
+                sameClass.add(s);
+            }
+        }
+        return sameClass;
+    }
+
 }

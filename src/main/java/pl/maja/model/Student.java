@@ -16,7 +16,17 @@ public class Student {
     private String surname;
     private String schoolClass;
 
-    @OneToMany(mappedBy = "student")
+    @Transient
+    private  static Set<Student> sameClassSet = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JsonIgnore
+    @JoinTable(name="students_subjects", joinColumns = @JoinColumn(name="id_student", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name="id_subject", referencedColumnName = "id"))
     private Set<Subject> subjects;
 
     public Student(String name, String surname, String schoolClass) {
@@ -70,10 +80,8 @@ public class Student {
 
     public void addSubject(Subject subject) {
         this.subjects.add(subject);
-        subject.setStudent(this);
-
+        subject.getStudents().add(this);
     }
-
 
     @Override
     public String toString() {
